@@ -9,12 +9,12 @@ import {
 import UserDTO from "../views/userDTO.js";
 import TokenDTO from "../views/tokenDTO.js";
 import bcrypt from "bcrypt"
+import { SALT } from "../constants.js";
+
 
 
 export const registerUserController = async (request, response) => {
   const { name, username, email, password } = request.body;
-  const SALT = env.process.SALT
-
   
   if (!name || !username || !email || !password) {
     response.status(406).send("Campo obrigatório não preenchido");

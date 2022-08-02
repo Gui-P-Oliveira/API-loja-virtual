@@ -1,8 +1,7 @@
 import express from 'express'
 import { productRouter, cartRouter, userRouter } from './routes/index.js'
 import authenticationMiddleware from './middleware/authentication.js'
-
-const PORT = process.env.PORT
+import { PORT } from './constants.js'
 
 const server = express()
 
@@ -13,5 +12,5 @@ server.use('/product', productRouter)
 server.use('/cart', cartRouter)
 
 server.listen(PORT, () => {
-    console.log('servidor rodando...')
+    console.log(`servidor rodando ${PORT}`)
 })

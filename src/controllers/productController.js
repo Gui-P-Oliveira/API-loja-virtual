@@ -7,7 +7,7 @@ import {
   removeProduct,
 } from "../models/product.js";
 
-export const findProduct = async (req, res) => {
+export const findProductController = async (req, res) => {
   const { id } = req.params;
   const product = await findProductById(id);
 
@@ -29,7 +29,7 @@ export const findProduct = async (req, res) => {
   return res.status(200).json(productDTO);
 };
 
-export const saveProduct = async (req, res) => {
+export const saveProductController = async (req, res) => {
   const { name, category, price } = req.body;
 
   if (!name || !price || !category) {
@@ -41,7 +41,7 @@ export const saveProduct = async (req, res) => {
   res.status(201).send("Produto salvo");
 };
 
-export const updatingProduct = async (req, res) => {
+export const updateProductController = async (req, res) => {
   const { id } = req.params;
   const { name, category, price } = req.body;
   const updatedProduct = await updateProduct(id, name, category, price);
@@ -56,7 +56,7 @@ export const updatingProduct = async (req, res) => {
   res.status(201).json(updatedProductDTO);
 };
 
-export const removingProduct = async (req, res) => {
+export const removeProductController = async (req, res) => {
   const id = req.params.id;
   const removedProduct = await removeProduct(id);
 

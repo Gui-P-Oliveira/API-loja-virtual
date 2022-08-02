@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import 'dotenv/config'
+import { MONGO_URL } from './constants.js'
 
-const MONGO_URL = process.env.MONGO_URL;
 
 const connect = async (tentativa = 1) => {
     try {
