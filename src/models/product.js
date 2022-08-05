@@ -5,6 +5,7 @@ const ProductModel = mongoose.model("Product", {
   category: String,
   clientPrice: Number,
   custPrice: Number,
+  thumbnail: String,
 });
 
 export const findProductById = async (id) => {
@@ -46,3 +47,11 @@ export const removeProduct = async (id) => {
   const product = await ProductModel.findByIdAndDelete(id);
   return product
 };
+
+export const saveImageProductPath = async(id, path) => {
+  const product = await findProductById(id)
+
+  product.thumbnail = path
+
+  return product
+}

@@ -1,4 +1,4 @@
-
+import { getValidToken } from '../models/token.js'
 
 const authorizationMiddleware = async (req, res, next) => {
   const tokenId = req.headers.authorization;
