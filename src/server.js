@@ -7,12 +7,14 @@ import errorHandler from './middleware/errorHandler.js'
 import { MAX_FILE_SIZe, PORT } from './constants.js'
 import fileUpload from 'express-fileupload'
 import 'uuid'
+import pathLog from './middleware/pathLog.js'
 
 const server = express()
 
 server.use(cors({
     allowedOrigins: ['localhost']
 }))
+server.use(pathLog)
 server.use(fileUpload({
     limits: {
         fileSize: MAX_FILE_SIZe,

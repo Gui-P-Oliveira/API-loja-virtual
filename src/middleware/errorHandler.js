@@ -1,5 +1,4 @@
 import DBError from "../errors/dberror.js"
-console.log(DBError)
 
 const errorHandler = (error, req, res, next) => {     
     console.log('entrou 1 linha')
