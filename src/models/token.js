@@ -5,15 +5,17 @@ const TokenModel = mongoose.model("Token", {
   createdAt: Date,
   active: Boolean,
   userId: String,
+  userRole: String
 });
 
-export const createToken = async (userId) => {
+export const createToken = async (userId, userRole) => {
   const token = new TokenModel();
 
   token.createdAt = new Date();
   token.active = true;
   token.userId = userId;
-
+  token.userRole = userRole;
+  
   await token.save();
 
   return token;

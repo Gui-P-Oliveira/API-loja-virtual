@@ -1,8 +1,7 @@
-import { getValidToken } from '../models/token.js'
+import { getValidToken } from "../models/token.js";
 
 const authorizationMiddleware = async (req, res, next) => {
   const tokenId = req.headers.authorization;
-  console.log(tokenId);
 
   try {
     await getValidToken(tokenId);
@@ -14,4 +13,4 @@ const authorizationMiddleware = async (req, res, next) => {
   next();
 };
 
-export default authorizationMiddleware
+export default authorizationMiddleware;

@@ -1,7 +1,7 @@
 import express from 'express'
 import 'express-async-errors'
 import cors from 'express-cors'
-import { productRouter, cartRouter, userRouter } from './routes/index.js'
+import { productRouter, cartRouter, userRouter, externalAPIRouter } from './routes/index.js'
 import authenticationMiddleware from './middleware/authentication.js'
 import errorHandler from './middleware/errorHandler.js'
 import { MAX_FILE_SIZe, PORT } from './constants.js'

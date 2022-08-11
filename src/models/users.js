@@ -6,6 +6,7 @@ const UserModel = mongoose.model("Users", {
   username: String,
   email: String,
   password: String,
+  role: String
 });
 
 export const createNewUser = async ({ name, username, email, password }) => {
@@ -15,7 +16,7 @@ export const createNewUser = async ({ name, username, email, password }) => {
   });
 
   if (checkUserRegistered) {
-    throw new DBError('usuario ou senha já cadastrado...sem throw');
+    throw new DBError('usuario ou senha já cadastrado.');
   }
 
   const newUser = new UserModel();
@@ -24,6 +25,7 @@ export const createNewUser = async ({ name, username, email, password }) => {
   newUser.username = username;
   newUser.email = email;
   newUser.password = password;
+  newUser.role = 'client'
 
   await newUser.save();
 

@@ -11,7 +11,7 @@ import TokenDTO from "../views/tokenDTO.js";
 import bcrypt from "bcrypt";
 import { SALT } from "../constants.js";
 
-export const registerUserController = async (request, response,next) => {
+export const registerUserController = async (request, response, next) => {
   const { name, username, email, password } = request.body;
 
   if (!name || !username || !email || !password) {
@@ -19,18 +19,15 @@ export const registerUserController = async (request, response,next) => {
   }
 
   let newUser;
-  // try {
-    const hash = bcrypt.hashSync(password, SALT);
-    newUser = await createNewUser({
-      name,
-      username,
-      email,
-      password: hash,
-    });
-    
-  // } catch (error) {
-  //   next(error)
-  // }
+
+  const hash = bcrypt.hashSync(password, SALT);
+  newUser = await createNewUser({
+    name,
+    username,
+    email,
+    password: hash,
+  });
+
   const newUserDTO = new UserDTO(newUser);
 
   response.status(201).json(newUserDTO);
@@ -49,8 +46,8 @@ export const userLoginController = async (request, response) => {
     response.status(403).send("Unauthorized password");
     return;
   }
-
-  const token = await createToken(user._id);
+  const token = await createToken(user._id, user.role);
+  console.log(token)
   const tokenDTO = new TokenDTO(token);
 
   response.status(201).send(tokenDTO);
