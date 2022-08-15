@@ -1,14 +1,8 @@
-import { getValidToken } from "../models/token.js";
+import getUserByTokenId from '../services/authorization.js'
 
 const authorizationMiddleware = async (req, res, next) => {
   const tokenId = req.headers.authorization;
-
-  try {
-    await getValidToken(tokenId);
-  } catch (e) {
-    res.status(404).send("Unauthorizade");
-    return;
-  }
+  const user = await getUserByTokenId(tokenId)  
 
   next();
 };

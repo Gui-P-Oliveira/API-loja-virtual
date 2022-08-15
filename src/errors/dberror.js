@@ -1,3 +1,7 @@
-class DBError extends Error{};
+class UserDBError extends Error{};
+class ProductDBError extends Error{};
+class TokenDBError extends Error{};
 
-export default DBError
+export const userDBError = new UserDBError()
+export const productDBError = new ProductDBError()
+export const tokenDBError = new TokenDBError()

@@ -2,7 +2,7 @@ import { createToken, disableToken } from "../models/token.js";
 import {
   createNewUser,
   getUserByUserNameOrEmail,
-  findUserById,
+  getUserById,
   updateUserById,
   removeUserById,
 } from "../models/users.js";
@@ -10,6 +10,10 @@ import UserDTO from "../views/userDTO.js";
 import TokenDTO from "../views/tokenDTO.js";
 import bcrypt from "bcrypt";
 import { SALT } from "../constants.js";
+import jwt from 'jsonwebtoken'
+import moment from "moment";
+
+//pode colocar a criaçao do jwt como service, colocar salt.env, 
 
 export const registerUserController = async (request, response, next) => {
   const { name, username, email, password } = request.body;
@@ -46,8 +50,13 @@ export const userLoginController = async (request, response) => {
     response.status(403).send("Unauthorized password");
     return;
   }
-  const token = await createToken(user._id, user.role);
-  console.log(token)
+  const token = jwt.sign({
+    username,
+    userId: user._id,
+    role: 'client',
+    expireAt: moment().add(3, 'd').toDate()
+  }, 'meu_salt')
+ 
   const tokenDTO = new TokenDTO(token);
 
   response.status(201).send(tokenDTO);

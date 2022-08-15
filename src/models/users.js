@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import DBError from "../errors/dberror.js";
+import  { userDBError } from "../errors/dberror.js";
 
 const UserModel = mongoose.model("Users", {
   name: String,
@@ -16,7 +16,7 @@ export const createNewUser = async ({ name, username, email, password }) => {
   });
 
   if (checkUserRegistered) {
-    throw new DBError('usuario ou senha já cadastrado.');
+    throw new userDBError('usuario ou senha já cadastrado.');
   }
 
   const newUser = new UserModel();
@@ -40,8 +40,8 @@ export const getUserByUserNameOrEmail = async ({ username, email }) => {
   return user;
 };
 
-export const findUserById = async (id) => {
-  const user = await UserModel.findById(id);
+export const getUserById = async (userId) => {
+  const user = await UserModel.findById(userId);
   return user;
 };
 
@@ -55,6 +55,8 @@ export const updateUserById = async (id, name, username, email, password) => {
     user.password = password;
     await user.save();
     return user;
+  } else {
+    throw new userDBError('usuario não encontrado.');
   }
 };
 

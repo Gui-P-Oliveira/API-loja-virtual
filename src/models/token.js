@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import moment from "moment";
+import { tokenDBError } from "../errors/dberror.js";
 
 const TokenModel = mongoose.model("Token", {
   createdAt: Date,
@@ -24,15 +25,15 @@ export const createToken = async (userId, userRole) => {
 export const getValidToken = async (tokenId) => {
   const token = await TokenModel.findById(tokenId);
 
-  if (!token) throw new Error("Token inválido");
+  if (!token) throw new tokenDBError("Token inválido");
 
-  if (!token.active) throw new Error("Token inativo");
+  if (!token.active) throw new tokenDBError("Token inativo");
 
   const expireAt = moment(token.createdAt);
 
   expireAt.add(2, 'hours');
 
-  if (expireAt < moment()) throw new Error("Token inativo");
+  if (expireAt < moment()) throw new tokenDBError("Token inativo");
 
   return token;
 };

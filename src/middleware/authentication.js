@@ -1,10 +1,10 @@
-import { getValidToken } from "../models/token.js";
+import jwt from "jsonwebtoken";
 
 const authenticationMiddleware = async (req, res, next) => {
-  const tokenId = req.headers.authorization;
+  const token = req.headers.authorization;
 
   try {
-    await getValidToken(tokenId);
+    const data = jwt.verify(token, "meu salt");
   } catch (e) {
     res.status(404).send("Unauthorizade");
     return;

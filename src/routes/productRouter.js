@@ -9,6 +9,10 @@ import { v4 as uuidV4 } from 'uuid'
 
 const productRouter = new Router();
 
+// fn validateProduct
+// fn fromReqToProductDB
+// fn fromDBToClient
+
 productRouter.get("/:id?", findProductController);
 
 productRouter.post("/", saveProductController);
