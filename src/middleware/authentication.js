@@ -1,12 +1,12 @@
 import jwt from "jsonwebtoken";
 
 const authenticationMiddleware = async (req, res, next) => {
-  const token = req.headers.authorization;
+  const token = await req.headers.authorization;
 
   try {
-    const data = jwt.verify(token, "meu salt");
+    jwt.verify(token, "meu_salt");
   } catch (e) {
-    res.status(404).send("Unauthorizade");
+    res.status(404).send("Unauthorizade jwt e auth");
     return;
   }
 

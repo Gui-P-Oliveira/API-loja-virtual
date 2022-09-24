@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
-import  { userDBError } from "../errors/dberror.js";
+import DBError from "../errors/dberror.js";
 
 const UserModel = mongoose.model("Users", {
   name: String,
   username: String,
   email: String,
   password: String,
-  role: String
+  role: String,
 });
 
 export const createNewUser = async ({ name, username, email, password }) => {
@@ -16,7 +16,7 @@ export const createNewUser = async ({ name, username, email, password }) => {
   });
 
   if (checkUserRegistered) {
-    throw new userDBError('usuario ou senha já cadastrado.');
+    throw new DBError("Usuario ou senha já cadastrado.");
   }
 
   const newUser = new UserModel();
@@ -25,7 +25,7 @@ export const createNewUser = async ({ name, username, email, password }) => {
   newUser.username = username;
   newUser.email = email;
   newUser.password = password;
-  newUser.role = 'client'
+  newUser.role = "client";
 
   await newUser.save();
 
@@ -37,12 +37,21 @@ export const getUserByUserNameOrEmail = async ({ username, email }) => {
     $or: [{ username: username }, { email: email }],
   });
 
-  return user;
+  if (!user) {
+    throw new DBError("Usuario não encontrado.");
+  } else {
+    return user;
+  }
 };
 
 export const getUserById = async (userId) => {
   const user = await UserModel.findById(userId);
-  return user;
+
+  if (!user) {
+    throw new DBError("Usuario não encontrado.");
+  } else {
+    return user;
+  }
 };
 
 export const updateUserById = async (id, name, username, email, password) => {
@@ -56,11 +65,16 @@ export const updateUserById = async (id, name, username, email, password) => {
     await user.save();
     return user;
   } else {
-    throw new userDBError('usuario não encontrado.');
+    throw new DBError("Usuário não encontrado.");
   }
 };
 
 export const removeUserById = async (id) => {
   const userRemoved = await UserModel.findByIdAndDelete(id);
-  return userRemoved;
+
+  if (!userRemoved) {
+    throw new DBError("Usuario não encontrado.");
+  } else {
+    return userRemoved;
+  }
 };

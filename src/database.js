@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import "dotenv/config";
 import { MONGO_URL } from "./constants.js";
 
 const connect = async (tentativa = 1) => {

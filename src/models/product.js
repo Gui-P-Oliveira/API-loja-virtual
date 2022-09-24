@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import DBError from "../errors/dberror.js";
 
 const ProductModel = mongoose.model("Product", {
   name: String,
@@ -10,7 +11,12 @@ const ProductModel = mongoose.model("Product", {
 
 export const findProductById = async (id) => {
   const product = await ProductModel.findById(id);
-  return product;
+
+  if (!product) {
+    throw new DBError("Produto não encontrado.");
+  } else {
+    return product;
+  }
 };
 
 export const findAllProducts = async () => {
@@ -40,18 +46,25 @@ export const updateProduct = async (id, name, category, price) => {
     product.custPrice = price;
     await product.save();
     return product;
+  } else {
+    throw new DBError("Produto não encontrado.");
   }
 };
 
 export const removeProduct = async (id) => {
   const product = await ProductModel.findByIdAndDelete(id);
-  return product
+
+  if (!product) {
+    throw new DBError("Produto não encontrado.");
+  } else {
+    return product;
+  }
 };
 
-export const saveImageProductPath = async(id, path) => {
-  const product = await findProductById(id)
+export const saveImageProductPath = async (id, path) => {
+  const product = await findProductById(id);
 
-  product.thumbnail = path
+  product.thumbnail = path;
 
-  return product
-}
+  return product;
+};

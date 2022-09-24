@@ -1,24 +1,49 @@
 import { Router } from "express";
-import { addProductIntoCart } from "../models/cart.js";
-import { getValidToken } from "../models/token.js";
+import { addProductIntoCart, removeProductFromCart, showCart, sumProductsFromCart } from "../models/cart.js";
+import jwt from "jsonwebtoken";
+
 
 const cartRouter = new Router();
 
-cartRouter.post("/add", async (request, response) => {
-  const tokenId = req.headers.authorization;
-  const userId = await getValidToken(tokenId).id;
-  const productId = req.param.id;
-
-  const addedProductCart = addProductIntoCart(userId, productId);
-
-  response.status(201).send(addedProductCart);
+cartRouter.post("/add/:id", async (req, res) => {   
+  const token = req.headers.authorization;
+  const validToken = jwt.verify(token, "meu_salt");
+  const userId = validToken.userId;  
+  const productId = req.params.id;
+ 
+  const addedProductCart = await addProductIntoCart(userId, productId);
+  
+  res.status(201).send(addedProductCart);
 });
 
-cartRouter.post("/remove", (request, response) => {
-  response.status(201).send("cart");
+cartRouter.post("/show", async (req, res) => {   
+  const token = req.headers.authorization;
+  const validToken = jwt.verify(token, "meu_salt");
+  const userId = validToken.userId;  
+
+  const Cart = await showCart(userId);
+  
+  res.status(201).send(Cart);
 });
-cartRouter.post("/total", (request, response) => {
-  response.status(201).send("cart");
+
+cartRouter.post("/remove/:id", async (req, res) => {
+  const token = req.headers.authorization;
+  const validToken = jwt.verify(token, "meu_salt");
+  const userId = validToken.userId;  
+  const productId = req.params.id;
+ 
+  const addedProductCart = await removeProductFromCart(userId, productId);
+  
+  res.status(200).send(addedProductCart);
+});
+
+cartRouter.post("/total", async (req, res) => {
+  const token = req.headers.authorization;
+  const validToken = jwt.verify(token, "meu_salt");
+  const userId = validToken.userId;  
+  const cartSum = await sumProductsFromCart(userId)
+  
+  res.status(200).send(cartSum);
 });
 
 export default cartRouter;

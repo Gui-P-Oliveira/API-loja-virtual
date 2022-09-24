@@ -33,7 +33,7 @@ export const saveProductController = async (req, res) => {
   const { name, category, price } = req.body;
 
   if (!name || !price || !category) {
-    res.status(400).send("Falta parâmetros no corpo da requisição");
+    res.status(400).send("Faltam parâmetros no corpo da requisição");
   }
 
   await saveNewProduct(name, category, price);
