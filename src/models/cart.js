@@ -30,19 +30,24 @@ export const showCart = async (userId) => {
   const userCart = await CartModel.findOne({ userId: userId });
 
   if (userCart !== null) {
-    return userCart;    
+    return userCart;
   }
-
 };
 
 export const removeProductFromCart = async (userId, productId) => {
   const userCart = await CartModel.findOne({ userId: userId });
   const productIndexToRemove = userCart.products.findIndex(
-    (product) => product._id === productId
+    (product) => product._id == productId
   );
-
   if (productIndexToRemove !== -1) {
-    userCart.products.splice(productIndexToRemove, 1);
+    const cart = userCart.products;
+    const productToRemove = cart[productIndexToRemove];
+
+    cart[productIndexToRemove] = cart[cart.length - 1];
+
+    cart[cart.length - 1] = productToRemove;
+
+    cart.pop();
 
     await userCart.save();
   } else {
@@ -52,11 +57,14 @@ export const removeProductFromCart = async (userId, productId) => {
 
 export const sumProductsFromCart = async (userId) => {
   const userCart = await CartModel.findOne({ userId: userId });
+  let total = 0;
+  userCart.products.forEach((product) => {
+    total = total + product.clientPrice;
+  });
 
-  const cartSum = userCart.products.reduce(
-    (previousValue, currentValue) =>
-      previousValue.clientPrice + currentValue.clientPrice
-  );
+  userCart.products = [];
 
-  return String(cartSum);
+  await userCart.save();
+
+  return total;
 };

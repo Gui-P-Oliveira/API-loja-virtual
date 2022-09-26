@@ -42,8 +42,9 @@ cartRouter.post("/total", async (req, res) => {
   const validToken = jwt.verify(token, "meu_salt");
   const userId = validToken.userId;  
   const cartSum = await sumProductsFromCart(userId)
+  console.log(cartSum)
   
-  res.status(200).send(cartSum);
+  res.status(200).send(`${cartSum}`);
 });
 
 export default cartRouter;

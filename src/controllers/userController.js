@@ -39,7 +39,7 @@ export const registerUserController = async (request, response, next) => {
 
 export const userLoginController = async (request, response) => {
   const { username, email, password } = request.body;
-  const user = await getUserByUserNameOrEmail({ username, email });
+  const user = await getUserByUserNameOrEmail({ username, email });  
   
   if (!user) {
     response.status(403).send("Unauthorized user");
@@ -50,8 +50,7 @@ export const userLoginController = async (request, response) => {
     response.status(403).send("Unauthorized password");
     return;
   }
-
-  console.log(username, 'na rota de login')
+ 
   const token = jwt.sign({    
     userId: user._id,
     role: 'client',
