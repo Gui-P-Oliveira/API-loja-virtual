@@ -1,12 +1,13 @@
 import mongoose from "mongoose";
 import { MONGO_URL } from "./constants.js";
+import logger from "./services/logger.js";
 
 const connect = async (tentativa = 1) => {
   try {
-    await mongoose.connect(MONGO_URL);
-    console.log("Conectado");
+    mongoose.connect(MONGO_URL);
+    logger.info("Conected");
   } catch (e) {
-    console.log("Não consegui conectar no banco");
+    logger.error(`Conection failed: ${e}`);
     setTimeout(() => connect(tentativa + 1), 3000 ** tentativa);
   }
 };
